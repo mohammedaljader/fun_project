@@ -13,6 +13,10 @@ public class CardDto {
         CardName = cardName;
     }
 
+    public CardDto(){
+
+    }
+
     public String getCardId() {
         return CardId;
     }

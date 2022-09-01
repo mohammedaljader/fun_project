@@ -50,6 +50,8 @@ public class TaskController {
         }
     }
 
+
+
     @PostMapping("/task")
     public ResponseEntity<MessageResponse> addTask(@RequestBody TaskDto taskDto){
         boolean result = taskService.addTask(taskDto);
@@ -79,4 +81,5 @@ public class TaskController {
             return ResponseEntity.notFound().build();
         }
     }
+
 }

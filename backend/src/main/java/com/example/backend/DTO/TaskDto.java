@@ -18,6 +18,9 @@ public class TaskDto {
         this.cardId = cardId;
     }
 
+    public TaskDto() {
+    }
+
     public String getTaskId() {
         return taskId;
     }
