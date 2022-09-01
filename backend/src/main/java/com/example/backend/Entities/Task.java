@@ -24,6 +24,24 @@ public class Task {
     private String taskId;
     private String taskTitle;
     private boolean taskStatus;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id")
     private Card card;
+
+    public Task(String taskTitle, boolean taskStatus) {
+        this.taskTitle = taskTitle;
+        this.taskStatus = taskStatus;
+    }
+
+    public Task(String taskId, String taskTitle, boolean taskStatus) {
+        this.taskId = taskId;
+        this.taskTitle = taskTitle;
+        this.taskStatus = taskStatus;
+    }
+
+    public Task(String taskTitle, boolean taskStatus, Card card) {
+        this.taskTitle = taskTitle;
+        this.taskStatus = taskStatus;
+        this.card = card;
+    }
 }

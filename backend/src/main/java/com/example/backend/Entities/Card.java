@@ -28,4 +28,14 @@ public class Card {
     @JsonIgnore
     private List<Task> tasks;
 
+    //region Constructors
+    public Card(String cardName) {
+        this.cardName = cardName;
+    }
+
+    public Card(String cardId, String cardName) {
+        this.cardId = cardId;
+        this.cardName = cardName;
+    }
+    //endregion
 }

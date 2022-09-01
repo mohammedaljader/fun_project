@@ -1,5 +1,6 @@
 package com.example.backend.Service;
 
+import com.example.backend.DTO.TaskDto;
 import com.example.backend.Data_access.ICardDAL;
 import com.example.backend.Data_access.ITaskDAL;
 import com.example.backend.Entities.Card;
@@ -7,6 +8,7 @@ import com.example.backend.Entities.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,17 +23,26 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public Task findTaskById(String taskId) {
-        return taskDAL.findTaskById(taskId);
+    public TaskDto findTaskById(String taskId) {
+        Task task =  taskDAL.findTaskById(taskId);
+        return new TaskDto(task.getTaskId(), task.getTaskTitle(), task.isTaskStatus(), task.getCard().getCardId());
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return taskDAL.getAllTasks();
+    public List<TaskDto> getAllTasks() {
+        List<TaskDto> taskDtos = new ArrayList<>();
+        List<Task> tasks= taskDAL.getAllTasks();
+        for (Task task: tasks) {
+            TaskDto taskDto = new TaskDto(task.getTaskId(), task.getTaskTitle(), task.isTaskStatus(), task.getCard().getCardId());
+            taskDtos.add(taskDto);
+        }
+        return taskDtos;
     }
 
     @Override
-    public boolean addTask(Task task) {
+    public boolean addTask(TaskDto taskDto) {
+        Card card = cardDAL.findCardById(taskDto.getCardId());
+        Task task = new Task(taskDto.getTaskTitle(), false, card);
         return taskDAL.addTask(task) != null;
     }
 
@@ -43,16 +54,22 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public boolean updateTask(Task task) {
-        Task oldTask = taskDAL.findTaskById(task.getTaskId());
-        oldTask.setTaskId(task.getTaskId());
-        oldTask.setTaskStatus(task.isTaskStatus());
+    public boolean updateTask(TaskDto taskDto) {
+        Task oldTask = taskDAL.findTaskById(taskDto.getTaskId());
+        oldTask.setTaskId(taskDto.getTaskId());
+        oldTask.setTaskStatus(taskDto.isTaskStatus());
         return taskDAL.updateTask(oldTask) != null;
     }
 
     @Override
-    public List<Task> getAllTasksByCard(String cardId) {
+    public List<TaskDto> getAllTasksByCard(String cardId) {
+        List<TaskDto> taskDtos = new ArrayList<>();
         Card card = cardDAL.findCardById(cardId);
-        return taskDAL.getAllTasksByCard(card);
+        List<Task> tasks =  taskDAL.getAllTasksByCard(card);
+        for (Task task: tasks) {
+            TaskDto taskDto = new TaskDto(task.getTaskId(), task.getTaskTitle(), task.isTaskStatus(), task.getCard().getCardId());
+            taskDtos.add(taskDto);
+        }
+        return taskDtos;
     }
 }

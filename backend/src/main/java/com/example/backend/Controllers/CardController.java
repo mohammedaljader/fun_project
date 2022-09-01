@@ -1,6 +1,7 @@
 package com.example.backend.Controllers;
 
-import com.example.backend.Entities.Card;
+import com.example.backend.DTO.CardDto;
+import com.example.backend.DTO.MessageResponse;
 import com.example.backend.Service.ICardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class CardController {
     }
 
     @GetMapping("/cards")
-    public ResponseEntity<List<Card>> getAllCards(){
-        List<Card> cards = cardService.getAllCards();
+    public ResponseEntity<List<CardDto>> getAllCards(){
+        List<CardDto> cards = cardService.getAllCards();
         if(cards != null){
             return ResponseEntity.ok().body(cards);
         }else {
@@ -30,8 +31,8 @@ public class CardController {
     }
 
     @GetMapping("/card/{id}")
-    public ResponseEntity<Card> getCardById(@PathVariable String id){
-        Card card = cardService.findCardById(id);
+    public ResponseEntity<CardDto> getCardById(@PathVariable String id){
+        CardDto card = cardService.findCardById(id);
         if(card != null){
             return ResponseEntity.ok().body(card);
         }else {
@@ -39,32 +40,31 @@ public class CardController {
         }
     }
 
-    //Todo MessageResponse
     @PostMapping("/card")
-    public ResponseEntity<Boolean> addCard(@RequestBody Card card){
-        boolean result = cardService.addCard(card);
+    public ResponseEntity<MessageResponse> addCard(@RequestBody CardDto cardDto){
+        boolean result = cardService.addCard(cardDto);
         if(result){
-            return ResponseEntity.ok().body(true);
+            return ResponseEntity.ok().body(new MessageResponse("Card added successfully!!"));
         }else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/card/{id}")
-    public ResponseEntity<Boolean> deleteCard(@PathVariable String id){
+    public ResponseEntity<MessageResponse> deleteCard(@PathVariable String id){
         boolean result = cardService.deleteCard(id);
         if(result){
-            return ResponseEntity.ok().body(true);
+            return ResponseEntity.ok().body(new MessageResponse("Card deleted successfully!!"));
         }else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @PostMapping("/card")
-    public ResponseEntity<Boolean> updateCard(@RequestBody Card card){
-        boolean result = cardService.updateCard(card);
+    @PutMapping("/card")
+    public ResponseEntity<MessageResponse> updateCard(@RequestBody CardDto cardDto){
+        boolean result = cardService.updateCard(cardDto);
         if(result){
-            return ResponseEntity.ok().body(true);
+            return ResponseEntity.ok().body(new MessageResponse("Card updated successfully!!"));
         }else {
             return ResponseEntity.notFound().build();
         }
