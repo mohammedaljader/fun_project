@@ -1,12 +1,22 @@
-import React, {useState} from 'react';
+import React from 'react';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+
+// Page Components
+import Trello from './trello';
+
+// CSS Imports
+import './App.css';
+import './Components/card.css';
+
 
 const App: React.FC = () => {
-  const [todo, setTodo] = useState<string>("");
 
   return (
-    <div>
-      <h1>Hello Dear!</h1>
-    </div>
+    <DndProvider backend={HTML5Backend}>
+        <Trello/>
+    </DndProvider>
   );
 }
 
