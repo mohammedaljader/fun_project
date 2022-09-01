@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-function App() {
+const App: React.FC = () => {
+  const [todo, setTodo] = useState<string>("");
+
   return (
     <div>
       <h1>Hello Dear!</h1>
